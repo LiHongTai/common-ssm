@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class SpringTX {
 
-    @Bean(name = "baseTransactionManager")
+    @Bean(name = "transactionManager")
     public DataSourceTransactionManager transactionManager(@Qualifier("baseDataSource") DataSource dataSource){
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);
