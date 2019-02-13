@@ -1,0 +1,1 @@
+CREATE DATABASE common_ssm;
