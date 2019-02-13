@@ -1,5 +1,6 @@
 package com.roger.core.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -13,8 +14,8 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class SpringTX {
 
-    @Bean
-    public DataSourceTransactionManager transactionManager(DataSource dataSource){
+    @Bean(name = "baseTransactionManager")
+    public DataSourceTransactionManager transactionManager(@Qualifier("baseDataSource") DataSource dataSource){
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);
         return transactionManager;

@@ -47,7 +47,7 @@ public class CommonDataSource {
     @Value("${datasource.druid.filters}")
     private String filters;
 
-    @Bean
+    @Bean(name = "baseDataSource")
     public DruidDataSource dataSource() throws SQLException {
         DruidDataSource druidDataSource = new com.alibaba.druid.pool.DruidDataSource();
         druidDataSource.setDriverClassName(driveClassName);
