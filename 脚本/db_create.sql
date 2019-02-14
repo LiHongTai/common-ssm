@@ -1,1 +1,3 @@
 CREATE DATABASE common_ssm;
+
+CREATE DATABASE slave_ssm;

@@ -15,11 +15,12 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 @Configuration
-@MapperScan(value = SystemConstant.MAPPER_SCAN_BASE_PACKAGE ,sqlSessionFactoryRef = "baseSqlSessionFactory")
-public class MyBatis {
+@Import(DynamicDataSource.class)
+@MapperScan(value = SystemConstant.MAPPER_SCAN_BASE_PACKAGE ,sqlSessionFactoryRef = "customSqlSessionFactory")
+public class CustomSqlSessionFactoryBean {
 
-    @Bean(name = "baseSqlSessionFactory")
-    public SqlSessionFactoryBean sqlSessionFactoryBean(@Qualifier("baseDataSource") DataSource dataSource) throws IOException {
+    @Bean(name = "customSqlSessionFactory")
+    public SqlSessionFactoryBean sqlSessionFactoryBean(@Qualifier("multipleDataSource") DataSource dataSource) throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
         sqlSessionFactoryBean.setDataSource(dataSource);

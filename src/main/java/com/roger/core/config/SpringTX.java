@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@Import(CommonDataSource.class)
+@Import(DynamicDataSource.class)
 @EnableTransactionManagement
 public class SpringTX {
 
     @Bean(name = "transactionManager")
-    public DataSourceTransactionManager transactionManager(@Qualifier("baseDataSource") DataSource dataSource){
+    public DataSourceTransactionManager transactionManager(@Qualifier("multipleDataSource") DataSource dataSource){
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);
         return transactionManager;

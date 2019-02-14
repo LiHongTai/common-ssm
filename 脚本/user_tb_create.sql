@@ -13,7 +13,7 @@
 
  Date: 19/11/2018 11:02:30
 */
-
+use common_ssm;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

@@ -34,6 +34,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 引入druid数据源管理组件 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -72,6 +78,12 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>${hibernate.jpa.version}</version>
         </dependency>
+        <!-- 添加aop组件组件-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!-- 添加log4j组件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestUserServiceImpl extends SpringBaseTestSuit {
+public class UserServiceImplTest extends SpringBaseTestSuit {
 
     @Autowired
     private UserService userService;
