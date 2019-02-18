@@ -14,6 +14,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 @EnableConfigurationProperties({MasterDBConfig.class,SlaveDBConfig.class})
 @ComponentScan(value = SystemConstant.COMPONENT_SCAN_PACKAGE)
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy//启动aop切面功能
 public class SpringConfig {
 }
