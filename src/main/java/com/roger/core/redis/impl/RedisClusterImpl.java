@@ -7,10 +7,7 @@ import com.roger.core.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisClusterConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisCluster;
 
@@ -27,9 +24,10 @@ public class RedisClusterImpl implements IRedis {
 
     /**
      * 获取Jedis原始客户端操作对象
+     *
      * @return
      */
-    private JedisCluster getJedisCluster(){
+    private JedisCluster getJedisCluster() {
         RedisConnectionFactory redisConnectionFactory = redisClusterTemplate.getRequiredConnectionFactory();
         RedisClusterConnection redisClusterConnection = redisConnectionFactory.getClusterConnection();
         JedisCluster jedisCluster = (JedisCluster) redisClusterConnection.getNativeConnection();
@@ -350,7 +348,7 @@ public class RedisClusterImpl implements IRedis {
     public Long lpush(String business, String key, String... values) {
         ListOperations opsForList = redisClusterTemplate.opsForList();
         String nodeKey = RedisUtil.buildKey(business, key);
-        return opsForList.leftPushAll(nodeKey,Arrays.asList(values));
+        return opsForList.leftPushAll(nodeKey, Arrays.asList(values));
     }
 
     /**
@@ -437,66 +435,148 @@ public class RedisClusterImpl implements IRedis {
     public Long rpush(String business, String key, String... values) {
         ListOperations opsForList = redisClusterTemplate.opsForList();
         String nodeKey = RedisUtil.buildKey(business, key);
-        return opsForList.rightPushAll(nodeKey,Arrays.asList(values));
+        return opsForList.rightPushAll(nodeKey, Arrays.asList(values));
     }
 
     @Override
     public Long sadd(String business, String key, String... values) {
-
-        return null;
+        SetOperations opsForSet = redisClusterTemplate.opsForSet();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return opsForSet.add(nodeKey, values);
     }
 
+    /**
+     * 返回集合Set中元素的个数
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @return
+     */
     @Override
     public Long scard(String business, String key) {
-        return null;
+        SetOperations opsForSet = redisClusterTemplate.opsForSet();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return opsForSet.size(nodeKey);
     }
 
+    /**
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @param seconds  过期时间，单位秒
+     * @param value
+     * @return
+     */
     @Override
-    public String setex(String business, String key, Integer seconds, String value) {
-        return null;
+    public void setex(String business, String key, Integer seconds, String value) {
+        ValueOperations opsForValue = redisClusterTemplate.opsForValue();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        opsForValue.set(nodeKey, value, seconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * 获取集合类型Set中所有的元素
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @return
+     */
     @Override
     public Set<String> smembers(String business, String key) {
-        return null;
+        SetOperations opsForSet = redisClusterTemplate.opsForSet();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return opsForSet.members(nodeKey);
     }
 
+    /**
+     * 移除集合Set中的一个或多个元素
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @param values   集合中将要删除的元素
+     * @return 从集合中删除元素的个数
+     */
     @Override
     public Long srem(String business, String key, String... values) {
-        return null;
+        SetOperations opsForSet = redisClusterTemplate.opsForSet();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return opsForSet.remove(nodeKey, values);
     }
 
+    /**
+     * 对列表list类型的集合进行修剪，只保留start和end之间的元素，其他元素清楚
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @param start    ...-2,-1,0,1,2....
+     * @param end      ...-2,-1,0,1,2....
+     * @return
+     */
     @Override
-    public String ltrim(String business, String key, Long start, Long end) {
-        return null;
+    public void ltrim(String business, String key, Long start, Long end) {
+        ListOperations opsForList = redisClusterTemplate.opsForList();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        opsForList.trim(nodeKey, start, end);
     }
 
+    /**
+     * 判断集合Set中是否存在memeber元素
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @param member   元素
+     * @return
+     */
     @Override
     public Boolean sismember(String business, String key, String member) {
-        return null;
+        SetOperations opsForSet = redisClusterTemplate.opsForSet();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return opsForSet.isMember(nodeKey, member);
     }
 
+    /**
+     * @param business       业务类型
+     * @param key            在redis数据库中存储节点
+     * @param value
+     * @param existEnum      设置保存条件
+     *                       NX: 只有当redis库中不存在key，才能设置成功
+     *                       XX: 只有当redis库中已经存在key，才能设置成功
+     * @param expireTimeEnum 设置过期时间的单位
+     *                       EX: 单位秒
+     *                       PX: 单位毫秒
+     * @param time
+     * @return
+     */
     @Override
     public String set(String business, String key, String value, ExistEnum existEnum, ExpireTimeEnum expireTimeEnum, long time) {
-        return null;
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return getJedisCluster().set(nodeKey, value, existEnum.name(), expireTimeEnum.name(), time);
     }
 
+    /**
+     * 获取当前节点的值，并用新值更新当前节点的值
+     *
+     * @param business 业务类型
+     * @param key      在redis数据库中存储节点
+     * @param value    存储节点的新值
+     * @return oldValue
+     */
     @Override
     public String getSet(String business, String key, String value) {
-
-        return null;
+        ValueOperations opsForValue = redisClusterTemplate.opsForValue();
+        String nodeKey = RedisUtil.buildKey(business, key);
+        return (String) opsForValue.getAndSet(nodeKey, value);
     }
 
     @Override
     public Long hset(String business, byte[] key, byte[] field, byte[] value) {
         byte[] nodeKey = RedisUtil.buildKey(business, key);
-        return getJedisCluster().hset(nodeKey,field,value);
+        return getJedisCluster().hset(nodeKey, field, value);
     }
 
     @Override
     public byte[] hget(String business, byte[] key, byte[] field) {
         byte[] nodeKey = RedisUtil.buildKey(business, key);
-        return getJedisCluster().hget(nodeKey,field);
+        return getJedisCluster().hget(nodeKey, field);
     }
 
 }

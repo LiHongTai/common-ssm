@@ -63,9 +63,33 @@ public class RedisClusterImplTest extends SpringBaseTestSuit {
     }
 
     @Test
+    public void testsadd(){
+        Long aLong = iRedis.sadd("goods", "phone", "HW");
+        System.out.println("sadd：" + aLong);
+    }
+
+    @Test
+    public void testsmembers(){
+        Set<String> smembers = iRedis.smembers("goods", "phone");
+        System.out.println(smembers);
+    }
+
+    @Test
+    public void testSrem(){
+        Long srem = iRedis.srem("goods", "phone", "IPhone", "ds");
+        System.out.println(srem);
+    }
+
+    @Test
+    public void testsismember(){
+        Boolean aBoolean = iRedis.sismember("goods", "phone", "ViVo");
+        assertTrue(aBoolean);
+    }
+
+    @Test
     public void testHsetByteArr() {
         Long aLong = iRedis.hset("member", "user:1002".getBytes(), "name".getBytes(), "Roger6632".getBytes());
-        System.out.println(aLong);
+        System.out.println("hset:"+aLong);
     }
 
     @Test

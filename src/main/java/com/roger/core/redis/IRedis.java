@@ -47,10 +47,10 @@ public interface IRedis {
     Long rpush(String business, String key, String... values);
     Long sadd(String business, String key, String... values);
     Long scard(String business, String key);
-    String setex(String business, String key, Integer seconds, String value);
+    void setex(String business, String key, Integer seconds, String value);
     Set<String> smembers(String business, String key);
     Long srem(String business, String key, String... values);
-    String ltrim(String business, String key, Long start, Long end);
+    void ltrim(String business, String key, Long start, Long end);
     Boolean sismember(String business, String key, String member);
 
     String set(String business, String key, String value, ExistEnum existEnum, ExpireTimeEnum expireTimeEnum, long time);
