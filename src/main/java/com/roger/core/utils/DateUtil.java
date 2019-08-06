@@ -1,9 +1,11 @@
 package com.roger.core.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
 
+    public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     /**
      *sql.date
      */
@@ -34,4 +36,10 @@ public class DateUtil {
         return toTimestamp(System.currentTimeMillis());
     }
 
+
+    public static String getNoWTime(String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date nowDate = new Date();
+        return sdf.format(nowDate);
+    }
 }

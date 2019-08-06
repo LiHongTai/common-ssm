@@ -28,6 +28,7 @@
         <junit.verion>4.12</junit.verion>
         <lombok.version>1.16.20</lombok.version>
         <redis.version>2.9.0</redis.version>
+        <poi.version>4.0.0</poi.version>
         <spring.boot.data.redis.version>2.1.2.RELEASE</spring.boot.data.redis.version>
     </properties>
 
@@ -91,6 +92,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
         </dependency>
 
         <!-- 添加log4j组件-->
